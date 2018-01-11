@@ -1,3 +1,19 @@
+## Assumptions / alterations
+
+* Single user application.
+* Client extends person.
+* A person may be associated with more than one client.
+  * logic check: if two clients are associated with the same contact, that person is associated with two clients.
+* Database doesn't save data directly to file system, everything is in memory.
+* Don't worry about server errors.
+    * i.e landing on a person id that is not created returns EmptyResultDataAccessException
+* Don't worry about security because this is not real life (this is just fantasy).
+
+## Would be nice if time permits:
+
+* Database to save the data to file system so data persists between server sessions.
+* Don't show user any errors. Instead, have a catch-all page for server error messages.
+
 # Aquent developer candidate project
 
 You can find the code to use as the basis for this project at https://github.com/aquent/crud-app. Please fork the repo on GitHub and submit a link to your fork.
