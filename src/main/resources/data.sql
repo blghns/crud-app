@@ -5,7 +5,8 @@ INSERT INTO person (
     street_address,
     city,
     state,
-    zip_code
+    zip_code,
+    is_client
 ) VALUES (
     'John',
     'Smith',
@@ -13,7 +14,8 @@ INSERT INTO person (
     '123 Any St.',
     'Asheville',
     'NC',
-    '28801'
+    '28801',
+    true
 ), (
     'Jane',
     'Smith',
@@ -21,5 +23,14 @@ INSERT INTO person (
     '123 Any St.',
     'Asheville',
     'NC',
-    '28801'
+    '28801',
+    false
 );
+
+INSERT INTO person_contact_lookup (
+    person_id,
+    contact_id
+) VALUES (
+    0,
+    1
+)
