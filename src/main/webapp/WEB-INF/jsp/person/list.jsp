@@ -13,15 +13,31 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Person Listing</title>
-        <script src="<c:url value="/static/js/validate.js" />"></script>
+        <link rel="stylesheet" href="<c:url value="/static/css/bootstrap.min.css" />" />
+        <script src="<c:url value="/static/js/jquery.min.js" />"></script>
+        <script src="<c:url value="/static/js/bootstrap.min.js" />"></script>
+        <script>
+            $(document).ready(function(){
+                $('#example').DataTable();
+                $("#myInput").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $("#myTable tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
+        </script>
     </head>
     <body>
+    <div class="container">
         <h1>Person Listing</h1>     
         <p><a href="${pageContext.request.contextPath}/person/create">Create New Person</a></p>
+        <input class="form-control" id="myInput" type="text" placeholder="Search..">
         <c:choose>
             <c:when test="${fn:length(persons) gt 0}">
-                <table>
+                <table id="example" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>First Name</th>
@@ -31,7 +47,7 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="myTable">
                         <c:forEach items="${persons}" var="person">
                             <tr>
                                 <td>${person.firstName}</td>
@@ -39,8 +55,8 @@
                                 <td>${person.emailAddress}</td>
                                 <td>${person.isClient}</td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/person/edit/${person.personId}">Edit Person</a>
-                                    <a href="${pageContext.request.contextPath}/person/delete/${person.personId}">Delete Person</a>
+                                    <a href="${pageContext.request.contextPath}/person/edit/${person.personId}">Edit Person</a> |
+                                    <a href="${pageContext.request.contextPath}/person/delete/${person.personId}">Delete Person</a> |
                                     <a href="${pageContext.request.contextPath}/person/contacts/${person.personId}">View Contacts</a>
                                 </td>
                             </tr>
@@ -52,5 +68,6 @@
                 <p>No results found.</p>
             </c:otherwise>
         </c:choose>
+    </div>
     </body>
 </html>
