@@ -11,6 +11,7 @@
     <context:annotation-config/>
     <context:component-scan base-package="com.aquent.crudapp.controller" />
 
+    <mvc:resources mapping="/static/**" location="/static/" order="0" />
     <mvc:annotation-driven/>
 
     <bean id="viewResolver"
