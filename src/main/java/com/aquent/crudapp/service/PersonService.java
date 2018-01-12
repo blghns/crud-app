@@ -30,7 +30,7 @@ public interface PersonService {
      * Updates an existing person contact
      * @param contactLookup new values to save
      */
-    void updateContact(ContactLookup contactLookup);
+    void removeContact(ContactLookup contactLookup);
 
     /**
      * Retrieves all of the person records.

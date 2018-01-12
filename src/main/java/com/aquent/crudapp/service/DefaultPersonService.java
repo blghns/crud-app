@@ -45,8 +45,8 @@ public class DefaultPersonService implements PersonService {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
-    public void updateContact(ContactLookup contactLookup) {
-        this.personDao.updateContact(contactLookup);
+    public void removeContact(ContactLookup contactLookup) {
+        this.personDao.removeContact(contactLookup);
     }
 
     @Override

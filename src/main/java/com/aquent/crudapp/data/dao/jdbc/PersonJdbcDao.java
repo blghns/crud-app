@@ -40,9 +40,12 @@ public class PersonJdbcDao implements PersonDao {
                                                   + " WHERE (pcl.person_id = :personId OR pcl.contact_id = :personId)"
                                                   + " AND p.person_id != :personId";
 
-    private static final String SQL_UPDATE_CONTACT = "UPDATE person_contact_lookup SET (person_id, contact_id)"
-                                                        + " = (:personId, :contactId)"
-                                                        + " WHERE lookup_id = :lookupId";
+    private static final String SQL_REMOVE_CONTACT = "DELETE FROM person_contact_lookup pcl"
+                                                        + " WHERE pcl.person_id = :personId AND pcl.contact_id = :contactId";
+
+    private static final String SQL_DELETE_PERSON_CONTACTS = "DELETE FROM person_contact_lookup pcl"
+                                                           + " WHERE pcl.person_id = :personId OR pcl.contact_id = :personId";
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public void setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -65,8 +68,8 @@ public class PersonJdbcDao implements PersonDao {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
-    public void updateContact(ContactLookup contactLookup) {
-        namedParameterJdbcTemplate.update(SQL_UPDATE_CONTACT, new BeanPropertySqlParameterSource(contactLookup));
+    public void removeContact(ContactLookup contactLookup) {
+        namedParameterJdbcTemplate.update(SQL_REMOVE_CONTACT, new BeanPropertySqlParameterSource(contactLookup));
     }
 
     @Override
@@ -85,6 +88,7 @@ public class PersonJdbcDao implements PersonDao {
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
     public void deletePerson(Integer personId) {
         namedParameterJdbcTemplate.update(SQL_DELETE_PERSON, Collections.singletonMap("personId", personId));
+        namedParameterJdbcTemplate.update(SQL_DELETE_PERSON_CONTACTS, Collections.singletonMap("personId", personId));
     }
 
     @Override

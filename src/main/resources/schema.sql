@@ -11,9 +11,9 @@ CREATE TABLE person (
 );
 
 CREATE TABLE person_contact_lookup (
-    lookup_id integer IDENTITY,
     person_id integer NOT NULL,
-    contact_id integer,
+    contact_id integer NOT NULL,
+    PRIMARY KEY (person_id, contact_id),
     FOREIGN KEY (person_id) REFERENCES person (person_id),
     FOREIGN KEY (contact_id) REFERENCES person (person_id)
 );

@@ -58,12 +58,22 @@ public class PersonController {
 
     /**
      * Saves new contact associations
-     * On success, the user is redirected to the contacts page.
+     * the user is redirected to the contacts page.
      */
-    @RequestMapping(value = "contacts", method = RequestMethod.POST)
-    public String contacts(ContactLookup contactLookup) {
+    @RequestMapping(value = "contacts/add", method = RequestMethod.POST)
+    public String addContact(ContactLookup contactLookup) {
         personService.createContact(contactLookup);
-        return "redirect:/contacts";
+        return "redirect:/person/contacts/".concat(contactLookup.getPersonId().toString());
+    }
+
+    /**
+     * Removes a contact association
+     * the user is redirected to the contacts page.
+     */
+    @RequestMapping(value = "contacts/remove", method = RequestMethod.POST)
+    public String removeContact(ContactLookup contactLookup) {
+        personService.removeContact(contactLookup);
+        return "redirect:/person/contacts/".concat(contactLookup.getPersonId().toString());
     }
 
     /**

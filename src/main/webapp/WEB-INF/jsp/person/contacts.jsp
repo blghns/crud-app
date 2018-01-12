@@ -45,6 +45,11 @@
                             <a href="${pageContext.request.contextPath}/person/edit/${contact.personId}">Edit Person</a>
                             <a href="${pageContext.request.contextPath}/person/delete/${contact.personId}">Delete Person</a>
                             <a href="${pageContext.request.contextPath}/person/contacts/${contact.personId}">View Contacts</a>
+                            <form action="${pageContext.request.contextPath}/person/contacts/remove" method="POST">
+                                <input type="hidden" name="personId" value="${person.personId}"/>
+                                <input type="hidden" name="contactId" value="${contact.personId}"/>
+                                <input type="submit" name="removeContact" value="Remove Contact"/>
+                            </form>
                         </td>
                     </tr>
                 </c:forEach>
@@ -79,10 +84,10 @@
                             <a href="${pageContext.request.contextPath}/person/edit/${contact.personId}">Edit Person</a>
                             <a href="${pageContext.request.contextPath}/person/delete/${contact.personId}">Delete Person</a>
                             <a href="${pageContext.request.contextPath}/person/contacts/${contact.personId}">View Contacts</a>
-                            <form action="${pageContext.request.contextPath}/person/contacts" method="POST">
+                            <form action="${pageContext.request.contextPath}/person/contacts/add" method="POST">
                                 <input type="hidden" name="personId" value="${person.personId}"/>
                                 <input type="hidden" name="contactId" value="${contact.personId}"/>
-                                <input type="submit" name="addContact" value="addContact"/>
+                                <input type="submit" name="addContact" value="Add Contact"/>
                             </form>
                         </td>
                     </tr>
