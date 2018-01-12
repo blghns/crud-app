@@ -112,4 +112,8 @@ public class Person {
     public void setIsClient(boolean isClient) {
         this.isClient = isClient;
     }
+
+    public boolean equals(Object person) {
+        return (this.personId == ((Person)person).personId);
+    }
 }

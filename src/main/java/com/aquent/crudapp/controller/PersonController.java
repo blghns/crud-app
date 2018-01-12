@@ -2,10 +2,12 @@ package com.aquent.crudapp.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import com.aquent.crudapp.domain.ContactLookup;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,10 +37,33 @@ public class PersonController {
     @RequestMapping(value = "contacts/{personId}", method = RequestMethod.GET)
     public ModelAndView contacts(@PathVariable Integer personId) {
         ModelAndView mav = new ModelAndView("person/contacts");
+
+        HashSet<Person> addableContacts = new HashSet<Person>();
+        List<Person> people = personService.listPeople();
+        List<Person> contacts = personService.readContacts(personId);
+
+
+        people.forEach(person -> {
+            if(!contacts.contains(person) && !person.getPersonId().equals(personId)) {
+                addableContacts.add(person);
+            }
+        });
+
         mav.addObject("person", personService.readPerson(personId));
-        mav.addObject("contacts", personService.readContacts(personId));
+        mav.addObject("contacts", contacts);
+        mav.addObject("addableContacts", addableContacts);
         mav.addObject("errors", new ArrayList<String>());
         return mav;
+    }
+
+    /**
+     * Saves new contact associations
+     * On success, the user is redirected to the contacts page.
+     */
+    @RequestMapping(value = "contacts", method = RequestMethod.POST)
+    public String contacts(ContactLookup contactLookup) {
+        personService.createContact(contactLookup);
+        return "redirect:/contacts";
     }
 
     /**
