@@ -25,6 +25,24 @@ INSERT INTO person (
     'NC',
     '28801',
     false
+), (
+    'Al',
+    'Smith',
+    'als@aquent.com',
+    '123 Any St.',
+    'Asheville',
+    'NC',
+    '28801',
+    false
+), (
+    'Black',
+    'Smith',
+    'superman@aquent.com',
+    '123 Any St.',
+    'Asheville',
+    'NC',
+    '28801',
+    false
 );
 
 INSERT INTO person_contact_lookup (
