@@ -1,7 +1,9 @@
 package com.aquent.crudapp.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -34,7 +36,13 @@ public class PersonController {
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("person/list");
+        List<Person> peopleList = personService.listPeople();
+        HashMap<Integer, List<Person>> contactLookup = new HashMap<>();
+        peopleList.forEach(person -> {
+            contactLookup.put(person.getPersonId(), personService.readContacts(person.getPersonId()));
+        });
         mav.addObject("persons", personService.listPeople());
+        mav.addObject("contactLookup", contactLookup);
         return mav;
     }
 

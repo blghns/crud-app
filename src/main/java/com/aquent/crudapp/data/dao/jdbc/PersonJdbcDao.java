@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
+import com.aquent.crudapp.domain.ContactLookup;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -24,16 +25,48 @@ public class PersonJdbcDao implements PersonDao {
     private static final String SQL_LIST_PEOPLE = "SELECT * FROM person ORDER BY first_name, last_name, person_id";
     private static final String SQL_READ_PERSON = "SELECT * FROM person WHERE person_id = :personId";
     private static final String SQL_DELETE_PERSON = "DELETE FROM person WHERE person_id = :personId";
-    private static final String SQL_UPDATE_PERSON = "UPDATE person SET (first_name, last_name, email_address, street_address, city, state, zip_code)"
-                                                  + " = (:firstName, :lastName, :emailAddress, :streetAddress, :city, :state, :zipCode)"
+    private static final String SQL_UPDATE_PERSON = "UPDATE person SET (first_name, last_name, email_address, street_address, city, state, zip_code, is_client)"
+                                                  + " = (:firstName, :lastName, :emailAddress, :streetAddress, :city, :state, :zipCode, :isClient)"
                                                   + " WHERE person_id = :personId";
-    private static final String SQL_CREATE_PERSON = "INSERT INTO person (first_name, last_name, email_address, street_address, city, state, zip_code)"
-                                                  + " VALUES (:firstName, :lastName, :emailAddress, :streetAddress, :city, :state, :zipCode)";
+    private static final String SQL_CREATE_PERSON = "INSERT INTO person (first_name, last_name, email_address, street_address, city, state, zip_code, is_client)"
+                                                  + " VALUES (:firstName, :lastName, :emailAddress, :streetAddress, :city, :state, :zipCode, :isClient)";
 
+    private static final String SQL_CREATE_CONTACT = "INSERT INTO person_contact_lookup (person_id, contact_id)"
+                                                   + "VALUES (:personId, :contactId)";
+
+    private static final String SQL_READ_CONTACTS = "SELECT DISTINCT p.* FROM person p"
+                                                  + " INNER JOIN person_contact_lookup pcl"
+                                                  + " ON (p.person_id = pcl.person_id OR p.person_id = pcl.contact_id)"
+                                                  + " WHERE (pcl.person_id = :personId OR pcl.contact_id = :personId)"
+                                                  + " AND p.person_id != :personId";
+
+    private static final String SQL_UPDATE_CONTACT = "UPDATE person_contact_lookup SET (person_id, contact_id)"
+                                                        + " = (:personId, :contactId)"
+                                                        + " WHERE lookup_id = :lookupId";
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public void setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
+    public Integer createContact(ContactLookup contactLookup) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(SQL_CREATE_CONTACT, new BeanPropertySqlParameterSource(contactLookup), keyHolder);
+        return keyHolder.getKey().intValue();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public List<Person> readContacts(Integer personId) {
+        return namedParameterJdbcTemplate.query(SQL_READ_CONTACTS, Collections.singletonMap("personId", personId), new PersonRowMapper());
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
+    public void updateContact(ContactLookup contactLookup) {
+        namedParameterJdbcTemplate.update(SQL_UPDATE_CONTACT, new BeanPropertySqlParameterSource(contactLookup));
     }
 
     @Override
@@ -84,6 +117,7 @@ public class PersonJdbcDao implements PersonDao {
             person.setCity(rs.getString("city"));
             person.setState(rs.getString("state"));
             person.setZipCode(rs.getString("zip_code"));
+            person.setIsClient(rs.getBoolean("is_client"));
             return person;
         }
     }

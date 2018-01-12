@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import com.aquent.crudapp.domain.ContactLookup;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,24 @@ public class DefaultPersonService implements PersonService {
 
     public void setValidator(Validator validator) {
         this.validator = validator;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
+    public Integer createContact(ContactLookup contactLookup) {
+        this.personDao.createContact(contactLookup);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public List<Person> readContacts(Integer personId) {
+        this.personDao.readContacts(personId);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
+    public void updateContact(ContactLookup contactLookup) {
+        this.personDao.updateContact(contactLookup);
     }
 
     @Override

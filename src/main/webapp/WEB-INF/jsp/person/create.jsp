@@ -48,6 +48,9 @@
             <label for="zipCode">Zip Code:</label>
             <input type="text" name="zipCode" value="${person.zipCode}"/>
             <br/>
+            <label for="isClient">Is Client:</label>
+            <input type="checkbox" name="isClient" <c:if test="${person.isClient}"> checked </c:if>/>
+            <br/>
             <input type="submit" name="Submit" value="Submit"/>
         </form>
     </body>

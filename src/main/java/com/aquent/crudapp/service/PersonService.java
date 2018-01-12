@@ -2,12 +2,35 @@ package com.aquent.crudapp.service;
 
 import java.util.List;
 
+import com.aquent.crudapp.domain.ContactLookup;
 import com.aquent.crudapp.domain.Person;
 
 /**
  * Person operations.
  */
 public interface PersonService {
+
+    /**
+     * Creates a new contact record.
+     *
+     * @param contactLookup the person associated with the contact
+     * @return the new association id
+     */
+    Integer createContact(ContactLookup contactLookup);
+
+    /**
+     * Retrieves all of a person's contacts.
+     *
+     * @param personId the person to retrieve all the contacts for
+     * @return read a person's contacts
+     */
+    List<Person> readContacts(Integer personId);
+
+    /**
+     * Updates an existing person contact
+     * @param contactLookup new values to save
+     */
+    void updateContact(ContactLookup contactLookup);
 
     /**
      * Retrieves all of the person records.
