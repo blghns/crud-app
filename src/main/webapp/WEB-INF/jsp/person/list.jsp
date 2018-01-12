@@ -40,6 +40,7 @@
                                 <td>
                                     <a href="${pageContext.request.contextPath}/person/edit/${person.personId}">Edit Person</a>
                                     <a href="${pageContext.request.contextPath}/person/delete/${person.personId}">Delete Person</a>
+                                    <a href="${pageContext.request.contextPath}/person/contacts/${person.personId}">View Contacts</a>
                                 </td>
                             </tr>
                         </c:forEach>

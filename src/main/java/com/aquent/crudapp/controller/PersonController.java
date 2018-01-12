@@ -3,7 +3,6 @@ package com.aquent.crudapp.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -29,9 +28,24 @@ public class PersonController {
     @Inject private PersonService personService;
 
     /**
+     * Render contacts page
+     *
+     * @return list view populated with the current contacts of a person
+     */
+    @RequestMapping(value = "contacts/{personId}", method = RequestMethod.GET)
+    public ModelAndView contacts(@PathVariable Integer personId) {
+        ModelAndView mav = new ModelAndView("person/contacts");
+        mav.addObject("person", personService.readPerson(personId));
+        mav.addObject("contacts", personService.readContacts(personId));
+        mav.addObject("errors", new ArrayList<String>());
+        return mav;
+    }
+
+    /**
      * Renders the listing page.
      *
      * @return list view populated with the current list of people
+     * and contacts
      */
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public ModelAndView list() {
