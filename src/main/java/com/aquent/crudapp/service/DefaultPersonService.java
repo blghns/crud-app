@@ -34,13 +34,13 @@ public class DefaultPersonService implements PersonService {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
     public Integer createContact(ContactLookup contactLookup) {
-        this.personDao.createContact(contactLookup);
+        return this.personDao.createContact(contactLookup);
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Person> readContacts(Integer personId) {
-        this.personDao.readContacts(personId);
+        return this.personDao.readContacts(personId);
     }
 
     @Override
