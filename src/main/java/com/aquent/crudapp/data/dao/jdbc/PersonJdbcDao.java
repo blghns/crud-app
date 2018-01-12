@@ -41,10 +41,8 @@ public class PersonJdbcDao implements PersonDao {
                                                   + " AND p.person_id != :personId";
 
     private static final String SQL_REMOVE_CONTACT = "DELETE FROM person_contact_lookup pcl"
-                                                        + " WHERE pcl.person_id = :personId AND pcl.contact_id = :contactId";
-
-    private static final String SQL_DELETE_PERSON_CONTACTS = "DELETE FROM person_contact_lookup pcl"
-                                                           + " WHERE pcl.person_id = :personId OR pcl.contact_id = :personId";
+                                                        + " WHERE (pcl.person_id = :personId AND pcl.contact_id = :contactId)"
+                                                        + "OR (pcl.person_id = :contactId AND pcl.contact_id = :personId)";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -88,7 +86,6 @@ public class PersonJdbcDao implements PersonDao {
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
     public void deletePerson(Integer personId) {
         namedParameterJdbcTemplate.update(SQL_DELETE_PERSON, Collections.singletonMap("personId", personId));
-        namedParameterJdbcTemplate.update(SQL_DELETE_PERSON_CONTACTS, Collections.singletonMap("personId", personId));
     }
 
     @Override
