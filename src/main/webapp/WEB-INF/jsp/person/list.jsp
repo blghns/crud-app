@@ -20,7 +20,6 @@
         <script src="<c:url value="/static/js/bootstrap.min.js" />"></script>
         <script>
             $(document).ready(function(){
-                $('#example').DataTable();
                 $("#myInput").on("keyup", function() {
                     var value = $(this).val().toLowerCase();
                     $("#myTable tr").filter(function() {

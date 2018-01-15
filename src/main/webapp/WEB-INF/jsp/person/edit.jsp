@@ -14,8 +14,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Edit Person</title>
+        <link rel="stylesheet" href="<c:url value="/static/css/bootstrap.min.css" />" />
+        <script src="<c:url value="/static/js/jquery.min.js" />"></script>
+        <script src="<c:url value="/static/js/bootstrap.min.js" />"></script>
+        <script src="<c:url value="/static/js/jquery.form-validator.min.js" />"></script>
     </head>
     <body>
+    <div class="container">
         <h1>Edit Person</h1>
         <c:if test="${fn:length(errors) gt 0}">
             <p>Please correct the following errors in your submission:</p>
@@ -25,35 +30,68 @@
                 </c:forEach>
             </ul>
         </c:if>
-        <form action="${pageContext.request.contextPath}/person/edit" method="POST">
+        <form class="form-horizontal" action="${pageContext.request.contextPath}/person/edit" method="POST">
             <input type="hidden" name="personId" value="${person.personId}"/>
             <br/>
-            <label for="firstName">First Name:</label>
-            <input type="text" name="firstName" value="${person.firstName}"/>
-            <br/>
-            <label for="lastName">Last Name:</label>
-            <input type="text" name="lastName" value="${person.lastName}"/>
-            <br/>
-            <label for="emailAddress">Email Address:</label>
-            <input type="text" name="emailAddress" value="${person.emailAddress}"/>
-            <br/>
-            <label for="streetAddress">Street Address:</label>
-            <input type="text" name="streetAddress" value="${person.streetAddress}"/>
-            <br/>
-            <label for="city">City:</label>
-            <input type="text" name="city" value="${person.city}"/>
-            <br/>
-            <label for="state">State:</label>
-            <input type="text" name="state" value="${person.state}"/>
-            <br/>
-            <label for="zipCode">Zip Code:</label>
-            <input type="text" name="zipCode" value="${person.zipCode}"/>
-            <br/>
-            <label for="isClient">Is Client:</label>
-            <br/>
-            <input type="checkbox" name="isClient" <c:if test="${person.isClient}"> checked </c:if>/>
-            <br/>
-            <input type="submit" name="Submit" value="Submit"/>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="firstName">First Name:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" data-validation-length="1-50" data-validation="length" type="text" name="firstName" value="${person.firstName}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="lastName">Last Name:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" data-validation-length="1-50" data-validation="length" type="text" name="lastName" value="${person.lastName}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="emailAddress">Email Address:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" data-validation="email" type="text" name="emailAddress" value="${person.emailAddress}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="streetAddress">Street Address:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" data-validation-length="1-50" data-validation="length" type="text" name="streetAddress" value="${person.streetAddress}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="city">City:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" data-validation-length="1-50" data-validation="length" type="text" name="city" value="${person.city}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="state">State:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" data-validation-length="2-2" data-validation="length" type="text" name="state" value="${person.state}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="zipCode">Zip Code:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" data-validation-length="5-5" data-validation="length" type="text" name="zipCode" value="${person.zipCode}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label for="isClient">
+                            <input type="checkbox" name="isClient" <c:if test="${person.isClient}"> checked </c:if>/>
+                            Is Client?
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input class="btn btn-default" type="submit" name="Submit" value="Submit"/>
+                </div>
+            </div>
         </form>
+    </div>
+    <script>$.validate({validateOnBlur: true})</script>
     </body>
 </html>
