@@ -9,8 +9,11 @@
 <html>
 <head>
     <title>Contacts</title>
+    <link rel="stylesheet" href="<c:url value="/static/css/bootstrap.min.css" />" />
+    <script src="<c:url value="/static/js/bootstrap.min.js" />"></script>
 </head>
 <body>
+<div class="container">
     <a href="${pageContext.request.contextPath}/person/list">Go back to person listing</a>
     <h1>Contacts Listing: </h1>
     <c:if test="${fn:length(errors) gt 0}">
@@ -24,7 +27,7 @@
     <h2>Associated contacts of ${person.firstName} ${person.lastName}</h2>
     <c:choose>
         <c:when test="${fn:length(contacts) gt 0}">
-            <table>
+            <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th>First Name</th>
@@ -32,6 +35,7 @@
                     <th>Email Address</th>
                     <th>Is Client?</th>
                     <th>Actions</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,13 +46,15 @@
                         <td>${contact.emailAddress}</td>
                         <td>${contact.isClient}</td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/person/edit/${contact.personId}">Edit Person</a>
-                            <a href="${pageContext.request.contextPath}/person/delete/${contact.personId}">Delete Person</a>
+                            <a href="${pageContext.request.contextPath}/person/edit/${contact.personId}">Edit Person</a> |
+                            <a href="${pageContext.request.contextPath}/person/delete/${contact.personId}">Delete Person</a> |
                             <a href="${pageContext.request.contextPath}/person/contacts/${contact.personId}">View Contacts</a>
+                        </td>
+                        <td>
                             <form action="${pageContext.request.contextPath}/person/contacts/remove" method="POST">
                                 <input type="hidden" name="personId" value="${person.personId}"/>
                                 <input type="hidden" name="contactId" value="${contact.personId}"/>
-                                <input type="submit" name="removeContact" value="Remove Contact"/>
+                                <input class="btn btn-primary" type="submit" name="removeContact" value="Remove Contact"/>
                             </form>
                         </td>
                     </tr>
@@ -63,7 +69,7 @@
     <h2>Add Contact</h2>
     <c:choose>
         <c:when test="${fn:length(addableContacts) gt 0}">
-            <table>
+            <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th>First Name</th>
@@ -71,6 +77,7 @@
                     <th>Email Address</th>
                     <th>Is Client?</th>
                     <th>Actions</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -81,13 +88,15 @@
                         <td>${contact.emailAddress}</td>
                         <td>${contact.isClient}</td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/person/edit/${contact.personId}">Edit Person</a>
-                            <a href="${pageContext.request.contextPath}/person/delete/${contact.personId}">Delete Person</a>
+                            <a href="${pageContext.request.contextPath}/person/edit/${contact.personId}">Edit Person</a> |
+                            <a href="${pageContext.request.contextPath}/person/delete/${contact.personId}">Delete Person</a> |
                             <a href="${pageContext.request.contextPath}/person/contacts/${contact.personId}">View Contacts</a>
+                        </td>
+                        <td>
                             <form action="${pageContext.request.contextPath}/person/contacts/add" method="POST">
                                 <input type="hidden" name="personId" value="${person.personId}"/>
                                 <input type="hidden" name="contactId" value="${contact.personId}"/>
-                                <input type="submit" name="addContact" value="Add Contact"/>
+                                <input class="btn btn-primary" type="submit" name="addContact" value="Add Contact"/>
                             </form>
                         </td>
                     </tr>
@@ -99,5 +108,6 @@
             <p>No contacts found.</p>
         </c:otherwise>
     </c:choose>
+</div>
 </body>
 </html>
